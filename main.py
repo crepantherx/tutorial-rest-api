@@ -1,6 +1,7 @@
 from http.client import HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Path
+
 
 app = FastAPI()
 
@@ -26,3 +27,17 @@ def jobs(job_id: int):
 @app.get("/search", dependencies=[Depends(verify_token)])
 def clusters(name: str, tag: str):
     return {"name": name, "tag": tag}
+
+@app.get("/list/{entity}", dependencies=[Depends(verify_token)])
+def list_profiles(entity: str = Path(..., regex="^(users|profiles)$")):
+    data = {
+        "users": {
+            "sudhir_singh": {"place": "Mumbai"},
+            "navin": {"place": "Andhra Pradesh"},
+        },
+        "profiles": {
+            "navin_singh": {"place": "Mumbai"},
+            "navin": {"place": "Andhra Pradesh"},
+        }
+    }
+    return {entity: data[entity]}

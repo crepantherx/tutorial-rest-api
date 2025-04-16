@@ -8,6 +8,6 @@ if __name__ == "__main__":
     }
 
     print(requests.get(
-        "http://localhost:8000/jobs/32",
+        "http://localhost:8000/list/users",
         headers=headers,
     ).json())
